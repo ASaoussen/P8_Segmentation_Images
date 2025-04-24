@@ -10,8 +10,8 @@ from tensorflow.keras.models import load_model
 from segmentation_models.metrics import precision, recall
 from tensorflow.keras.metrics import BinaryAccuracy, BinaryIoU
 # --- Configuration Azure ---
-account_url = secrets.BLOB_URL
-account_key = secrets.BLOB_ACCOUNT_KEY  # 🔐 Remplace ceci par ta vraie clé
+account_url = os.getenv("BLOB_URL")
+account_key = os.getenv("BLOB_ACCOUNT_KEY")
 container_name = "container1"
 blob_prefix = "Model"
 local_model_path = "model"
@@ -123,5 +123,5 @@ def segment_image():
     # Retourner l'image générée
     return send_file(tmp_path, mimetype="image/png")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+#if __name__ == "__main__":
+    #app.run(debug=True)
