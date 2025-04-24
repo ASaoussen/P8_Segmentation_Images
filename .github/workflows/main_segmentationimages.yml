@@ -1,12 +1,12 @@
 name: Build and Deploy Python App to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: segmentationimages  # Azure Web App name
-  PYTHON_VERSION: '3.9'  # Python version
+  AZURE_WEBAPP_NAME: segmentationimages  # Nom de ton App Service
+  PYTHON_VERSION: '3.9'                  # Version Python
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -22,26 +22,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-
-      - name: Create and activate virtual environment
-        run: |
-          python -m venv myenv
-          myenv\Scripts\activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt 
+        run: |
+          python -m venv myenv
+          .\myenv\Scripts\activate
+          pip install -r requirements.txt
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
-            .
-            !venv/
+            . 
+            !myenv/
 
   deploy:
     runs-on: ubuntu-latest
@@ -63,5 +60,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: "production"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
