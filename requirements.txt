@@ -1,3 +1,6 @@
+
+setuptools
+wheel
 Flask>=2.0,<3.0
 matplotlib>=3.4,<4.0
 tensorflow-cpu==2.8.0
@@ -5,5 +8,7 @@ protobuf==3.20.0
 numpy>=1.20,<1.24
 Pillow>=8.0,<10.0
 gunicorn==20.1.0
-azure.storage.blob
-segmentation-models==1.0.1
+azure-storage-blob
+efficientnet
+image-classifiers
+git+https://github.com/qubvel/segmentation_models.git@1.0.1
