@@ -1,0 +1,10 @@
+myenv38/ 
+__pycache__/ 
+*.pyc 
+*.pyo 
+*.bak 
+*.swp 
+.ipynb_checkpoints/ 
+.vscode/ 
+*.png
+model/
