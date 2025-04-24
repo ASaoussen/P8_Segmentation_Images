@@ -6,3 +6,4 @@ numpy>=1.20,<1.24
 Pillow>=8.0,<10.0
 gunicorn==20.1.0
 azure.storage.blob
+segmentation-models==1.0.1
