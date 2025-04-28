@@ -13,8 +13,8 @@ from tensorflow.keras.metrics import BinaryAccuracy, BinaryIoU
 account_url = os.getenv("BLOB_URL")
 account_key = os.getenv("BLOB_ACCOUNT_KEY")
 container_name = "container1"
-blob_prefix = "Model"
-local_model_path = "model"
+blob_prefix = "Model_B"
+local_model_path = "model_B"
 
 # Créer le répertoire local pour sauvegarder le modèle si nécessaire
 os.makedirs(local_model_path, exist_ok=True)
