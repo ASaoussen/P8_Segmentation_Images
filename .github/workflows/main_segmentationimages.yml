@@ -34,8 +34,8 @@ jobs:
 
       - name: Clean up virtual environment and unnecessary files
         run: |
-          Remove-Item -Recurse -Force myenv
-          Remove-Item -Recurse -Force __pycache__
+          Remove-Item -Recurse -Force myenv -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
           Remove-Item -Recurse -Force tmp -ErrorAction SilentlyContinue
           Remove-Item *.log -ErrorAction SilentlyContinue
 
