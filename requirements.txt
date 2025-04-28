@@ -12,3 +12,4 @@ azure-storage-blob
 efficientnet
 image-classifiers
 git+https://github.com/qubvel/segmentation_models.git@1.0.1
+flasgger==0.9.7.1
