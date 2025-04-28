@@ -34,10 +34,10 @@ jobs:
 
       - name: Clean up virtual environment and unnecessary files
         run: |
-          rm -rf myenv  # Supprimer l'environnement virtuel
-          rm -rf *.log  # Supprimer les fichiers de log
-          rm -rf __pycache__  # Supprimer les fichiers de cache Python
-          rm -rf tmp/  # Supprimer les fichiers temporaires
+          Remove-Item -Recurse -Force myenv
+          Remove-Item -Recurse -Force __pycache__
+          Remove-Item -Recurse -Force tmp -ErrorAction SilentlyContinue
+          Remove-Item *.log -ErrorAction SilentlyContinue
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
