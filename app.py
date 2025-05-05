@@ -14,8 +14,8 @@ from flasgger import Swagger, swag_from  # <<< AJOUT
 account_url = os.getenv("BLOB_URL")
 account_key = os.getenv("BLOB_ACCOUNT_KEY")
 container_name = "container1"
-blob_prefix = "Model_B"
-local_model_path = "model_B"
+blob_prefix = "Model_C"
+local_model_path = "model_C"
 
 os.makedirs(local_model_path, exist_ok=True)
 
@@ -24,32 +24,27 @@ container_client = blob_service_client.get_container_client(container_name)
 
 model_files = []
 for blob in container_client.list_blobs(name_starts_with=blob_prefix):
-    blob_name = blob.name
-    local_model_file_path = os.path.join(local_model_path, os.path.relpath(blob_name, blob_prefix))
-    os.makedirs(os.path.dirname(local_model_file_path), exist_ok=True)
-    blob_client = container_client.get_blob_client(blob_name)
-    with open(local_model_file_path, "wb") as f:
-        blob_data = blob_client.download_blob()
-        blob_data.readinto(f)
-    print(f"Modèle téléchargé depuis Azure Blob Storage à {local_model_file_path}")
-    model_files.append(local_model_file_path)
+    if blob.name.endswith(".keras"):
+        blob_name = blob.name
+        local_model_file_path = os.path.join(local_model_path, os.path.basename(blob_name))
+        os.makedirs(os.path.dirname(local_model_file_path), exist_ok=True)
+        blob_client = container_client.get_blob_client(blob_name)
+        with open(local_model_file_path, "wb") as f:
+            blob_data = blob_client.download_blob()
+            blob_data.readinto(f)
+        print(f"Modèle téléchargé : {local_model_file_path}")
+        model_files.append(local_model_file_path)
 
-custom_objects = {
-    "binary_iou": BinaryIoU(name="binary_iou"),
-    "binary_accuracy": BinaryAccuracy(),
-    "precision": precision,
-    "recall": recall
-}
-
+# Chargement du modèle .keras
 if model_files:
     model_path = model_files[-1]
     try:
-        MODEL = load_model(local_model_path, custom_objects=custom_objects)
-        print("Modèle chargé avec succès!")
+        MODEL = load_model(model_path, custom_objects=custom_objects)
+        print("Modèle chargé avec succès !")
     except Exception as e:
         print(f"Erreur lors du chargement du modèle : {e}")
 else:
-    print("Aucun modèle trouvé dans le container Azure Blob Storage.")
+    print("Aucun fichier .keras trouvé.")
     MODEL = None
 
 MODEL_INPUT_WIDTH = 256
