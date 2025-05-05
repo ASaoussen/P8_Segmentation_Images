@@ -1,8 +1,8 @@
 name: Build and Deploy Python App to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: segmentationimages  # Nom de ton App Service
-  PYTHON_VERSION: '3.9'                  # Version Python
+  AZURE_WEBAPP_NAME: segmentationimages
+  PYTHON_VERSION: '3.9'
 
 on:
   push:
@@ -32,13 +32,18 @@ jobs:
           .\myenv\Scripts\activate
           pip install -r requirements.txt
 
+      - name: Clean up virtual environment and unnecessary files
+        run: |
+          Remove-Item -Recurse -Force myenv -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force tmp -ErrorAction SilentlyContinue
+          Remove-Item *.log -ErrorAction SilentlyContinue
+
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            . 
-            !myenv/
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
