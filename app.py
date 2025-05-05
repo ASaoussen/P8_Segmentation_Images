@@ -35,6 +35,14 @@ for blob in container_client.list_blobs(name_starts_with=blob_prefix):
         print(f"Modèle téléchargé : {local_model_file_path}")
         model_files.append(local_model_file_path)
 
+# Définir les custom_objects ici
+custom_objects = {
+    "binary_iou": BinaryIoU(name="binary_iou"),
+    "binary_accuracy": BinaryAccuracy(),
+    "precision": precision,
+    "recall": recall
+}
+
 # Chargement du modèle .keras
 if model_files:
     model_path = model_files[-1]
